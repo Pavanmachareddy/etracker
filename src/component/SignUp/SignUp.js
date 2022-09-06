@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import './SignUp.css';
+import "./SignUp.css";
 
 const SignUp = () => {
   const inputEmailRef = useRef();
@@ -43,28 +43,25 @@ const SignUp = () => {
     });
   };
   return (
-    <div className='signUpBody'>
+    <div className="signUpBody">
       <h2>SignUp</h2>
       <form onSubmit={submitHandler}>
-        
-          <input type="email" placeholder="Email" required ref={inputEmailRef} />
-        
-        
-          <input
-            type="password"
-            placeholder="Password"
-            required
-            ref={inputPasswordRef}
-          />
-        
-      
-          <input
-            type="password"
-            placeholder="ConfirmPassword"
-            required
-            ref={inputConfirmPasswordRef}
-          />
-      
+        <input type="email" placeholder="Email" required ref={inputEmailRef} />
+
+        <input
+          type="password"
+          placeholder="Password"
+          required
+          ref={inputPasswordRef}
+        />
+
+        <input
+          type="password"
+          placeholder="ConfirmPassword"
+          required
+          ref={inputConfirmPasswordRef}
+        />
+
         <div>
           <button className="signUpBtn">SignUp</button>
         </div>
