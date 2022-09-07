@@ -30,17 +30,24 @@ const SignUp = () => {
           "Content-Type": "application/json",
         },
       }
-    ).then((res) => {
-      if (res.ok) {
-        console.log("Successfully Registered");
-        alert("Successfully Registered");
-      } else {
-        return res.json().then((data) => {
-          console.log(data.error.message);
-          alert(data.error.message);
-        });
-      }
-    });
+    )
+      .then((res) => {
+        if (res.ok) {
+          console.log(res);
+          console.log("Successfully Registered");
+          alert("Successfully Registered");
+          return res.json();
+        } else {
+          return res.json().then((data) => {
+            console.log(data.error.message);
+            alert(data.error.message);
+          });
+        }
+      })
+      .then((data) => {
+        localStorage.setItem("idToken", data.idToken);
+        console.log(data);
+      });
   };
   return (
     <div className="signUpBody">

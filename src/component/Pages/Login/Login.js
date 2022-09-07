@@ -31,14 +31,17 @@ const Login = () => {
           return res.json();
         } else {
           return res.json().then((data) => {
-            alert("Something went wrong");
+            alert(data.error.message)
+            throw new Error(data.error.message)
           });
         }
       })
       .then((data) => {
-        localStorage.setItem("TokenID Expense", data.idToken);
+        // localStorage.setItem("TokenID Expense", data.idToken);
         navigate("/welcome");
-      });
+      }).catch((err)=>{
+        console.log("Something Went Wrong")
+      })
   };
   return (
     <div className="loginBody">

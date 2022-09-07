@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <div>
-      <Link to="/">Home</Link>
+    <div style={{display:'flex',justifyContent: "space-between"}}>
+      <Link to="/" className="home">Home</Link>
       <Link to="login">Login</Link>
     </div>
   );
