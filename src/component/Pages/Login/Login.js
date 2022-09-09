@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import './Login.css';
+import { useNavigate, Link } from "react-router-dom";
+import "./Login.css";
 
 const Login = (props) => {
   const loginEmailRef = useRef();
@@ -31,22 +31,24 @@ const Login = (props) => {
           return res.json();
         } else {
           return res.json().then((data) => {
-            alert(data.error.message)
-            throw new Error(data.error.message)
+            alert(data.error.message);
+            throw new Error(data.error.message);
           });
         }
       })
       .then((data) => {
-         localStorage.setItem("idToken", data.idToken);
-        props.setLogin(true)
+        localStorage.setItem("idToken", data.idToken);
+        props.setLogin(true);
         navigate("/welcome");
-      }).catch((err)=>{
-        console.log("Something Went Wrong")
       })
+      .catch((err) => {
+        console.log("Something Went Wrong");
+      });
   };
   return (
     <div className="loginBody">
-      <form onSubmit={loginSubmitHandler}>
+      <form className="loginForm" onSubmit={loginSubmitHandler}>
+        <h2>Login</h2>
         <label htmlFor="loginEmail">Email:</label>
         <input type="email" id="loginEmail" required ref={loginEmailRef} />
         <label htmlFor="loginPassword">Password:</label>
@@ -57,8 +59,9 @@ const Login = (props) => {
           ref={loginpasswordRef}
         />
         <button type="submit" className="loginBtn">
-          Submit
+          Login
         </button>
+        <Link to="/resetpassword">ForgotPassword</Link>
       </form>
     </div>
   );

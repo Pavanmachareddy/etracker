@@ -49,8 +49,8 @@ const SignUp = () => {
         }
       })
       .then((data) => {
-        localStorage.setItem("idToken", data.idToken);
-         console.log(data);
+        // localStorage.setItem("idToken", data.idToken);
+        //  console.log(data);
         let id = data.idToken;
 
         fetch(
@@ -58,7 +58,7 @@ const SignUp = () => {
           {
             method: "POST",
             body: JSON.stringify({
-              // requestType: "VERIFY_EMAIL",
+              requestType: "VERIFY_EMAIL",
               idToken: id,
             }),
             headers: {
@@ -68,11 +68,11 @@ const SignUp = () => {
         ).then((res) => {
           if (res.ok) {
             console.log("Otp sent");
-            console.log(res,'.......')
+            console.log(res, ".......");
           } else {
             return res.json().then((data) => {
               alert("Something went wrong");
-              console.log(data,'---------daaaa')
+              console.log(data, "---------daaaa");
             });
           }
         });
@@ -80,9 +80,10 @@ const SignUp = () => {
   };
   return (
     <div className="signUpBody">
-      <h2>SignUp</h2>
-      <form onSubmit={submitHandler}>
+      <form className="SignUpform" onSubmit={submitHandler}>
+        <h2>SignUp</h2>
         <input type="email" placeholder="Email" required ref={inputEmailRef} />
+        <br />
 
         <input
           type="password"
@@ -90,6 +91,7 @@ const SignUp = () => {
           required
           ref={inputPasswordRef}
         />
+        <br />
 
         <input
           type="password"
@@ -97,12 +99,17 @@ const SignUp = () => {
           required
           ref={inputConfirmPasswordRef}
         />
+        <br />
 
         <div>
-          <button className="signUpBtn">SignUp</button>
+          <button className="signUpBtn" type="submit">
+            SignUp
+          </button>
         </div>
       </form>
-      <div>{isVerify && <VerifyEmailId />}</div>
+      <div className="verifyOtp">
+        {isVerify && <VerifyEmailId verify={setIsVerify} />}
+      </div>
     </div>
   );
 };
