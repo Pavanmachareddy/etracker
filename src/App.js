@@ -6,9 +6,7 @@ import SignUp from "./component/Pages/SignUp/SignUp";
 import WellComePage from "./component/Pages/WellComePage";
 import Profile from "./component/Pages/Profile/Profile";
 import { useEffect, useState } from "react";
-import CreatingPassword from "./component/Pages/CreatingPassword/CreatingPassword";
 import PasswordReset from "./component/Pages/CreatingPassword/PasswordReset";
-import EnterResetCode from "./component/Pages/CreatingPassword/EnterResetCode";
 
 function App() {
   const [displayName, setDisplayName] = useState("");
@@ -16,8 +14,6 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("idToken")) {
-      setIsLogin(true);
 
       fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyA99thkT2KGxjW0fXTrkbxeP83YIjyXr10",
@@ -47,7 +43,7 @@ function App() {
         .catch((err) => {
           alert(err);
         });
-    }
+    
   }, []);
 
   return (
@@ -63,8 +59,6 @@ function App() {
           element={<Profile inputName={displayName} inputURL={photoUrl} />}
         />
         <Route exact path="/resetpassword" element={<PasswordReset />} />
-        <Route exact path="/enterresetcode" element={<EnterResetCode />} />
-        <Route exact path="/createpassword" element={<CreatingPassword />} />
       </Routes>
     </>
   );

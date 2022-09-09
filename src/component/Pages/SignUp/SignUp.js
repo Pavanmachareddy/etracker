@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import VerifyEmailId from "../VerifyEmail/VerifyEmailId";
+// import VerifyEmailId from "../VerifyEmail/VerifyEmailId";
 import "./SignUp.css";
 
 const SignUp = () => {
@@ -107,9 +107,9 @@ const SignUp = () => {
           </button>
         </div>
       </form>
-      <div className="verifyOtp">
+      {/* <div className="verifyOtp">
         {isVerify && <VerifyEmailId verify={setIsVerify} />}
-      </div>
+      </div> */}
     </div>
   );
 };

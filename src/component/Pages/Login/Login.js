@@ -49,12 +49,12 @@ const Login = (props) => {
     <div className="loginBody">
       <form className="loginForm" onSubmit={loginSubmitHandler}>
         <h2>Login</h2>
-        <label htmlFor="loginEmail">Email:</label>
-        <input type="email" id="loginEmail" required ref={loginEmailRef} />
-        <label htmlFor="loginPassword">Password:</label>
+        {/* <label htmlFor="loginEmail">Email:</label> */}
+        <input type="email" placeholder="Email" required ref={loginEmailRef} />
+        {/* <label htmlFor="loginPassword">Password:</label> */}
         <input
           type="password"
-          id="loginPassword"
+          placeholder="Password"
           required
           ref={loginpasswordRef}
         />

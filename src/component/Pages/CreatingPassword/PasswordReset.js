@@ -33,7 +33,10 @@ const PasswordReset = () => {
           });
         }
       })
-      .then(navigate("/enterresetcode"))
+      .then((data) => {
+        console.log(data);
+        navigate("/login");
+      })
       .catch((err) => {
         alert(err);
       });
@@ -41,10 +44,15 @@ const PasswordReset = () => {
   return (
     <div>
       <h2>Enter the email with which you registered</h2>
-      <input type="email" placeholder="Email" ref={inputResetEmailRef} />
-      <button type="submit" onClick={resetHandler}>
-        Send Link
-      </button>
+      <form onSubmit={resetHandler}>
+        <input
+          type="email"
+          placeholder="Email"
+          required
+          ref={inputResetEmailRef}
+        />
+        <button type="submit">Send Link</button>
+      </form>
     </div>
   );
 };

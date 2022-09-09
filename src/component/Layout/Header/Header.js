@@ -13,7 +13,7 @@ const Header = (props) => {
     <div className="header">
       <nav className="nav">
         <Link to="/" className="home">
-          Home
+          SignUp
         </Link>
         <Link to="login">Login</Link>
         <button className="btn" onClick={logoutHandler}>
