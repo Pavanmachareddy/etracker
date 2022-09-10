@@ -49,19 +49,18 @@ const Login = (props) => {
     <div className="loginBody">
       <form className="loginForm" onSubmit={loginSubmitHandler}>
         <h2>Login</h2>
-        {/* <label htmlFor="loginEmail">Email:</label> */}
         <input type="email" placeholder="Email" required ref={loginEmailRef} />
-        {/* <label htmlFor="loginPassword">Password:</label> */}
         <input
           type="password"
           placeholder="Password"
           required
           ref={loginpasswordRef}
         />
+        <Link to="/resetpassword">ForgotPassword</Link>
         <button type="submit" className="loginBtn">
           Login
         </button>
-        <Link to="/resetpassword">ForgotPassword</Link>
+       <p>New user?<Link to="/">SignUp</Link></p>
       </form>
     </div>
   );

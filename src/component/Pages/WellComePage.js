@@ -8,8 +8,10 @@ const WellComePage = () => {
       <div>
         <h2>Wellcome to Expense Tracker</h2>
       </div>
-      <p>Your profile is Incomplete.</p>
-      <Link to="/completeprofile">Complete Now</Link>
+      <p>
+        Your profile is Incomplete.
+        <Link to="/completeprofile">Complete Now</Link>
+      </p>
       <Expenses />
     </>
   );
