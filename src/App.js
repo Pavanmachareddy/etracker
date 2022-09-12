@@ -16,7 +16,7 @@ function App() {
       <Header login={isLogin} setLogin={setIsLogin} />
       <Routes>
         <Route exact path="/" element={<SignUp />} />
-        <Route exact path="/welcome" element={<WellComePage />} />
+        <Route exact path="/welcome" element={<WellComePage setIsLogin={setIsLogin} />} />
         <Route exact path="/login" element={<Login setLogin={setIsLogin} />} />
         <Route exact path="/completeprofile" element={<Profile />} />
         <Route exact path="/resetpassword" element={<PasswordReset />} />

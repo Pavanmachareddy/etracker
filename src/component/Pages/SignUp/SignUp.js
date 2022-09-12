@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 // import VerifyEmailId from "../VerifyEmail/VerifyEmailId";
 import "./SignUp.css";
 
@@ -9,6 +9,7 @@ const SignUp = () => {
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
   const [inputConfirmPassword, setInputConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const emailHandler = (e) => {
     setInputEmail(e.target.value);
@@ -21,11 +22,10 @@ const SignUp = () => {
   const confirmPasswordHandler = (e) => {
     setInputConfirmPassword(e.target.value);
   };
-  console.log(inputEmail,inputPassword)
+  console.log(inputEmail, inputPassword);
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(inputEmail,inputPassword)
-
+    console.log(inputEmail, inputPassword);
 
     if (inputPassword === inputConfirmPassword) {
       fetch(
@@ -33,8 +33,8 @@ const SignUp = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            email:inputEmail,
-            password:inputPassword,
+            email: inputEmail,
+            password: inputPassword,
             returnSecureToken: true,
           }),
           headers: {
@@ -48,6 +48,7 @@ const SignUp = () => {
             console.log("Successfully Registered");
             alert("Successfully Registered");
             // setIsVerify(true);
+            navigate("/login");
             return res.json();
           } else {
             return res.json().then((data) => {
