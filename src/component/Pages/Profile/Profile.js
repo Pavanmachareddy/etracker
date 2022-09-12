@@ -28,17 +28,22 @@ const Profile = (props) => {
           "Content-Type": "application/json",
         },
       }
-    ).then((res) => {
-      if (res.ok) {
-        alert("Profile Updated");
-        return res.json();
-      } else {
-        return res.json((data) => {
-          console.log(data, "----error-data");
-          alert(data.error.message);
-        });
-      }
-    });
+    )
+      .then((res) => {
+        if (res.ok) {
+          alert("Profile Updated");
+          console.log(res);
+          return res.json();
+        } else {
+          return res.json((data) => {
+            console.log(data, "----error-data");
+            alert(data.error.message);
+          });
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
   };
   return (
     <div className="profile">

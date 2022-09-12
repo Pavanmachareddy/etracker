@@ -1,53 +1,67 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 // import VerifyEmailId from "../VerifyEmail/VerifyEmailId";
 import "./SignUp.css";
 
 const SignUp = () => {
-  const [isVerify, setIsVerify] = useState(false);
+  // const [isVerify, setIsVerify] = useState(false);
 
-  const inputEmailRef = useRef();
-  const inputPasswordRef = useRef();
-  const inputConfirmPasswordRef = useRef();
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputPassword, setInputPassword] = useState("");
+  const [inputConfirmPassword, setInputConfirmPassword] = useState("");
 
+  const emailHandler = (e) => {
+    setInputEmail(e.target.value);
+  };
+
+  const passwordHandler = (e) => {
+    setInputPassword(e.target.value);
+  };
+
+  const confirmPasswordHandler = (e) => {
+    setInputConfirmPassword(e.target.value);
+  };
+  console.log(inputEmail,inputPassword)
   const submitHandler = (e) => {
     e.preventDefault();
+    console.log(inputEmail,inputPassword)
 
-    const enteredEmail = inputEmailRef.current.value;
-    const enteredPassword = inputPasswordRef.current.value;
 
-    if (enteredPassword !== inputConfirmPasswordRef.current.value) {
-      alert("Confirm Password is not same as Password");
-      return;
-    }
-
-    fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA99thkT2KGxjW0fXTrkbxeP83YIjyXr10",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: enteredEmail,
-          password: enteredPassword,
-          returnSecureToken: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    ).then((res) => {
-      if (res.ok) {
-        console.log(res);
-        console.log("Successfully Registered");
-        alert("Successfully Registered");
-        setIsVerify(true);
-        return res.json();
-      } else {
-        return res.json().then((data) => {
-          console.log(data.error.message);
-          alert(data.error.message);
+    if (inputPassword === inputConfirmPassword) {
+      fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA99thkT2KGxjW0fXTrkbxeP83YIjyXr10",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email:inputEmail,
+            password:inputPassword,
+            returnSecureToken: true,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => {
+          if (res.ok) {
+            console.log(res);
+            console.log("Successfully Registered");
+            alert("Successfully Registered");
+            // setIsVerify(true);
+            return res.json();
+          } else {
+            return res.json().then((data) => {
+              console.log(data.error.message);
+              alert(data.error.message);
+            });
+          }
+        })
+        .then((data) => {
+          console.log(data);
         });
-      }
-    });
+    } else {
+      alert("password is not same");
+    }
     // .then((data) => {
     //   let id = data.idToken;
 
@@ -80,22 +94,30 @@ const SignUp = () => {
     <div className="signUpBody">
       <form className="signUpform" onSubmit={submitHandler}>
         <h2>SignUp</h2>
-        <input type="email" placeholder="Email" required ref={inputEmailRef} />
+        <input
+          type="email"
+          placeholder="Email"
+          value={inputEmail}
+          required
+          onChange={(e) => emailHandler(e)}
+        />
         <br />
 
         <input
           type="password"
           placeholder="Password"
+          value={inputPassword}
           required
-          ref={inputPasswordRef}
+          onChange={(e) => passwordHandler(e)}
         />
         <br />
 
         <input
           type="password"
           placeholder="ConfirmPassword"
+          value={inputConfirmPassword}
           required
-          ref={inputConfirmPasswordRef}
+          onChange={(e) => confirmPasswordHandler(e)}
         />
         <br />
 
