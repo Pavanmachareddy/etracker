@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Premium from "../Pages/Premium";
 import { expenseActions } from "../store/expenseReducer";
 import "./ExpenseList.css";
 
 const Expenses = () => {
   const [expense, setExpense] = useState([]);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [category, setCategaory] = useState("");
   const [money, setMoney] = useState("");
   const [description, setDescription] = useState("");
   const [editId, setEditId] = useState("");
-  // const [editForm, setEditForm] = useState(false);
+
   const [premium, setPremium] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+  const [premiumfeatures, setPremiumfeatures] = useState(false);
+
+
   const storedExpense = useSelector((state) => state.expense.expense);
   const TotalExpense = useSelector((state) => state.expense.totalexpense);
   console.log("total", TotalExpense);
+
   const dispatch = useDispatch();
 
   console.log(storedExpense, ".........");
@@ -77,7 +81,7 @@ const Expenses = () => {
           console.log("nothing to show");
         }
       });
-  }, [refresh]);
+  }, []);
 
   const expenseData = {
     money,
@@ -104,7 +108,7 @@ const Expenses = () => {
         }
       ).then((res) => {
         if (res.ok) {
-          setRefresh(true);
+          alert(" data is edited plz refresh the page")
           setData(res.data);
         }
       });
@@ -123,7 +127,7 @@ const Expenses = () => {
         .then((res) => {
           if (res.ok) {
             alert("data sent to the backend");
-            setRefresh(true);
+            setData(true);
             return res.json();
           } else {
             return res.json((data) => {
@@ -134,7 +138,8 @@ const Expenses = () => {
 
         .catch((err) => {
           alert(err.message);
-        });
+        })
+        .then(() => dispatch(expenseActions.addingExpense(expenseData)));
     }
   };
 
@@ -146,8 +151,12 @@ const Expenses = () => {
     }
   }, [TotalExpense]);
 
+  const activatePremiumHandler = () => {
+    setPremiumfeatures(true);
+  };
+
   ///Delete
-  const deleteListHandler = (id) => {
+  const deleteListHandler = (id, itemMoney) => {
     const deleted = expense.filter((item) => {
       return item.id !== id;
     });
@@ -164,7 +173,9 @@ const Expenses = () => {
       }
     ).then((res) => {
       if (res.ok) {
-        alert("Expense successfully deleted");
+        setData(res.ok);
+        dispatch(expenseActions.afterDeleteExpense(itemMoney));
+        alert(" Data is deleted plz refresh the page");
         return res.json();
       } else {
         return res.json((data) => {
@@ -202,7 +213,8 @@ const Expenses = () => {
         }
       ).then((res) => {
         if (res.ok) {
-          setRefresh(true);
+          // alert("plz refresh the page")
+          // setRefresh(true);
         }
       });
     } else {
@@ -219,9 +231,9 @@ const Expenses = () => {
       )
         .then((res) => {
           if (res.ok) {
-            alert("data sent to the backend");
+            alert("plz refresh the page");
             dispatch(expenseActions.expense(expenseData));
-            setRefresh(true);
+            // setRefresh(true);
             return res.json();
           } else {
             return res.json((data) => {
@@ -239,7 +251,12 @@ const Expenses = () => {
   return (
     <div>
       <h3>Total Expense : ₹{TotalExpense}</h3>
-      {premium && <button>Activate Premium</button>}
+      {premium && (
+        <button type="button" onClick={activatePremiumHandler}>
+          Activate Premium
+        </button>
+      )}
+      {premiumfeatures && <Premium />}
       <h2>Enter Daily Expenses</h2>
       <form onSubmit={expenseSubmitHandler}>
         <label htmlFor="expenseMoney">Money</label>
@@ -277,7 +294,9 @@ const Expenses = () => {
             <li>Category: {item.category}</li>
             <div className="btnn">
               <button onClick={() => editHandler(item.id)}>Edit</button>
-              <button onClick={() => deleteListHandler(item.id)}>Delete</button>
+              <button onClick={() => deleteListHandler(item.id, item.money)}>
+                Delete
+              </button>
             </div>
           </ul>
         );
