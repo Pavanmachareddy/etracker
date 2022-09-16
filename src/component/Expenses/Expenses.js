@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { expenseActions } from "../store/expenseReducer";
 import "./ExpenseList.css";
 
 const Expenses = () => {
   const [expense, setExpense] = useState([]);
+  const [data, setData] = useState([]);
   const [category, setCategaory] = useState("");
   const [money, setMoney] = useState("");
   const [description, setDescription] = useState("");
   const [editId, setEditId] = useState("");
-  const [editForm, setEditForm] = useState(false);
+  // const [editForm, setEditForm] = useState(false);
+  const [premium, setPremium] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const storedExpense = useSelector((state) => state.expense.expense);
+  const TotalExpense = useSelector((state) => state.expense.totalexpense);
+  console.log("total", TotalExpense);
+  const dispatch = useDispatch();
+
+  console.log(storedExpense, ".........");
 
   const moneyHandler = (e) => {
     setMoney(e.target.value);
   };
-  console.log(money);
 
   const descriptionHandler = (e) => {
     setDescription(e.target.value);
   };
-  console.log(description);
 
   const categoryHandler = (e) => {
     setCategaory(e.target.value);
   };
-
-  console.log(category);
 
   useEffect(() => {
     fetch(
@@ -47,36 +53,43 @@ const Expenses = () => {
         console.log(err);
       })
       .then((data) => {
-        console.log(data);
+        console.log(data, "-----data");
 
-        const storeData = [];
-        for (let key in data) {
-          console.log(key);
-          let d = {
-            id: key,
-            money: data[key].money,
-            description: data[key].description,
-            category: data[key].category,
-          };
-          storeData.unshift(d);
-
-          console.log(d);
+        if (data !== null) {
+          const storeData = [];
+          for (let key in data) {
+            console.log(key);
+            let d = {
+              id: key,
+              money: data[key].money,
+              description: data[key].description,
+              category: data[key].category,
+            };
+            storeData.unshift(d);
+            console.log(storeData, "---------storeData");
+            console.log(d);
+            dispatch(expenseActions.totalExpense(data[key].money));
+          }
+          dispatch(expenseActions.expense(storeData));
+          setExpense([...storeData]);
+          // console.log(storeData);
+        } else {
+          console.log("nothing to show");
         }
-        setExpense([...storeData]);
-        console.log(storeData);
       });
   }, [refresh]);
+
+  const expenseData = {
+    money,
+    description,
+    category,
+  };
 
   //Form Submit
   const expenseSubmitHandler = (event) => {
     event.preventDefault();
 
-    const expenseData = {
-      money,
-      description,
-      category,
-    };
-    console.log(expenseData);
+    console.log(expenseData, "----------exdata");
 
     ///for Editing
     if (editId) {
@@ -92,6 +105,7 @@ const Expenses = () => {
       ).then((res) => {
         if (res.ok) {
           setRefresh(true);
+          setData(res.data);
         }
       });
     } else {
@@ -124,6 +138,14 @@ const Expenses = () => {
     }
   };
 
+  useEffect(() => {
+    if (TotalExpense >= 10000) {
+      setPremium(true);
+    } else {
+      setPremium(false);
+    }
+  }, [TotalExpense]);
+
   ///Delete
   const deleteListHandler = (id) => {
     const deleted = expense.filter((item) => {
@@ -154,22 +176,70 @@ const Expenses = () => {
 
   ////Edit
   const editHandler = (editId) => {
-    console.log(editId);
+    console.log(editId, "-----editId");
     setEditId(editId);
-    setEditForm(true);
-    const editData = expense.filter((item) => {
+
+    const editData = storedExpense.filter((item) => {
       return item.id === editId;
     });
-    console.log(editData);
+
     editData.map((item) => {
+      console.log(item, "---item");
       setMoney(item.money);
       setCategaory(item.category);
       setDescription(item.description);
     });
+    console.log(expenseData, "----expenseData");
+    if (editId) {
+      fetch(
+        `https://expense-tracker-7f0ee-default-rtdb.firebaseio.com/Expenses/${editId}.json`,
+        {
+          method: "PUT",
+          body: JSON.stringify(expenseData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => {
+        if (res.ok) {
+          setRefresh(true);
+        }
+      });
+    } else {
+      //Post Data
+      fetch(
+        "https://expense-tracker-7f0ee-default-rtdb.firebaseio.com/Expenses.json",
+        {
+          method: "POST",
+          body: JSON.stringify(expenseData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then((res) => {
+          if (res.ok) {
+            alert("data sent to the backend");
+            dispatch(expenseActions.expense(expenseData));
+            setRefresh(true);
+            return res.json();
+          } else {
+            return res.json((data) => {
+              throw new Error(data.error.message);
+            });
+          }
+        })
+
+        .catch((err) => {
+          alert(err.message);
+        });
+    }
   };
 
   return (
     <div>
+      <h3>Total Expense : ₹{TotalExpense}</h3>
+      {premium && <button>Activate Premium</button>}
       <h2>Enter Daily Expenses</h2>
       <form onSubmit={expenseSubmitHandler}>
         <label htmlFor="expenseMoney">Money</label>
@@ -199,21 +269,15 @@ const Expenses = () => {
         </select>
         <button type="submit">Submit</button>
       </form>
-      {expense.map((item) => {
+      {storedExpense.map((item) => {
         return (
           <ul key={item.id} className="ul">
             <li>Money: {item.money}</li>
             <li>Description: {item.description}</li>
             <li>Category: {item.category}</li>
             <div className="btnn">
-              <button onClick={() => editHandler(item.id)}>
-                Edit
-              </button>
-              <button
-                onClick={() => deleteListHandler(item.id)}
-              >
-                Delete
-              </button>
+              <button onClick={() => editHandler(item.id)}>Edit</button>
+              <button onClick={() => deleteListHandler(item.id)}>Delete</button>
             </div>
           </ul>
         );

@@ -1,10 +1,14 @@
 import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
+import { authActions } from "../../store/authReducer";
 import "./Login.css";
 
 const Login = (props) => {
   const loginEmailRef = useRef();
   const loginpasswordRef = useRef();
+  console.log(authActions, "authactions========");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const loginSubmitHandler = (e) => {
@@ -38,7 +42,8 @@ const Login = (props) => {
       })
       .then((data) => {
         localStorage.setItem("idToken", data.idToken);
-        props.setLogin(true);
+        // props.setLogin(true);
+        dispatch(authActions.login());
         navigate("/welcome");
       })
       .catch((err) => {
@@ -60,7 +65,9 @@ const Login = (props) => {
         <button type="submit" className="loginBtn">
           Login
         </button>
-       <p>New user?<Link to="/">SignUp</Link></p>
+        <p>
+          New user?<Link to="/">SignUp</Link>
+        </p>
       </form>
     </div>
   );

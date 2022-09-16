@@ -1,21 +1,20 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Expenses from "../Expenses/Expenses";
+import { authActions } from "../store/authReducer";
 
-const WellComePage = (props) => {
+const WellComePage = () => {
+  const islogin = useSelector((state) => state.auth.isAuthenticated);
+  // console.log(islogin, "loginnnnnnnnnnn");
+ 
+  const dispatch = useDispatch();
+ 
   useEffect(() => {
-    props.setIsLogin(true);
+    dispatch(authActions.login());
   }, []);
 
   return (
     <>
-      {/* <div>
-        <h2>Wellcome to Expense Tracker</h2>
-      </div> */}
-      {/* <p>
-        Your profile is Incomplete.
-        <Link to="/completeprofile">Complete Now</Link>
-      </p> */}
       <Expenses />
     </>
   );

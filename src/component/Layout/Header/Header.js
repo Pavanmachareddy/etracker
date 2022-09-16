@@ -1,40 +1,41 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { authActions } from "../../store/authReducer";
 import "./Header.css";
 
-const Header = (props) => {
-  let loggedIn = props.login;
+const Header = () => {
+  const islogin = useSelector((state) => state.auth.isAuthenticated);
+  console.log(islogin, "loginnnnnnnnnnn");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const logoutHandler = () => {
     localStorage.removeItem("idToken");
+
+    dispatch(authActions.logout());
     navigate("/login");
-    props.setLogin(false);
   };
   return (
     <div className="header">
       <nav className="nav">
-        {loggedIn && <span>Wellcome to Expense Tracker</span>}
-
-        {!loggedIn ? (
-          <>
-            <Link to="/" className="home">
-              SignUp
-            </Link>
-            <Link to="login">Login</Link>
-          </>
-        ) : (
+        {islogin && <span>Wellcome to Expense Tracker</span>}
+        {!islogin && (
+          <Link to="/" className="home">
+            SignUp
+          </Link>
+        )}
+        {!islogin && <Link to="login">Login</Link>}
+        {islogin && (
           <button className="btn" onClick={logoutHandler}>
             Logout
           </button>
         )}
-        {loggedIn ? (
+        {islogin && (
           <p>
             Your profile is Incomplete.
             <Link to="/completeprofile">Complete Now</Link>
           </p>
-        ) : (
-          ""
         )}
       </nav>
     </div>
