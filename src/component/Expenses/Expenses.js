@@ -11,10 +11,9 @@ const Expenses = () => {
   const [money, setMoney] = useState("");
   const [description, setDescription] = useState("");
   const [editId, setEditId] = useState("");
-
+  const [refresh, setRefresh] = useState(null);
   const [premium, setPremium] = useState(false);
   const [premiumfeatures, setPremiumfeatures] = useState(false);
-
 
   const storedExpense = useSelector((state) => state.expense.expense);
   const TotalExpense = useSelector((state) => state.expense.totalexpense);
@@ -73,6 +72,7 @@ const Expenses = () => {
             console.log(storeData, "---------storeData");
             console.log(d);
             dispatch(expenseActions.totalExpense(data[key].money));
+            // setData(data[key].money)
           }
           dispatch(expenseActions.expense(storeData));
           setExpense([...storeData]);
@@ -81,7 +81,7 @@ const Expenses = () => {
           console.log("nothing to show");
         }
       });
-  }, []);
+  }, [data]);
 
   const expenseData = {
     money,
@@ -108,7 +108,7 @@ const Expenses = () => {
         }
       ).then((res) => {
         if (res.ok) {
-          alert(" data is edited plz refresh the page")
+          // alert(" data is edited plz refresh the page");
           setData(res.data);
         }
       });
@@ -126,7 +126,7 @@ const Expenses = () => {
       )
         .then((res) => {
           if (res.ok) {
-            alert("data sent to the backend");
+            // alert("data sent to the backend");
             setData(true);
             return res.json();
           } else {
@@ -161,6 +161,7 @@ const Expenses = () => {
       return item.id !== id;
     });
     setExpense(deleted);
+    setData(deleted);
     console.log(deleted);
 
     fetch(
@@ -173,9 +174,9 @@ const Expenses = () => {
       }
     ).then((res) => {
       if (res.ok) {
-        setData(res.ok);
         dispatch(expenseActions.afterDeleteExpense(itemMoney));
-        alert(" Data is deleted plz refresh the page");
+        setData(res.data);
+        // alert(" Data is deleted plz refresh the page");
         return res.json();
       } else {
         return res.json((data) => {
@@ -214,7 +215,7 @@ const Expenses = () => {
       ).then((res) => {
         if (res.ok) {
           // alert("plz refresh the page")
-          // setRefresh(true);
+          setRefresh(res.ok);
         }
       });
     } else {
@@ -231,9 +232,9 @@ const Expenses = () => {
       )
         .then((res) => {
           if (res.ok) {
-            alert("plz refresh the page");
+            // alert("plz refresh the page");
             dispatch(expenseActions.expense(expenseData));
-            // setRefresh(true);
+            // setRefresh(res.ok);
             return res.json();
           } else {
             return res.json((data) => {
