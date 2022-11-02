@@ -37,10 +37,9 @@ const Expenses = () => {
 
   useEffect(() => {
     fetch(
-      "https://expense-tracker-7f0ee-default-rtdb.firebaseio.com/Expenses.json",
+      "https://expense-tracker2-4de07-default-rtdb.firebaseio.com/Expenses.json",
       {
         method: "GET",
-        // body: JSON.stringify(expenseDate),
         headers: {
           "Content-Type": "application/json",
         },
@@ -98,7 +97,7 @@ const Expenses = () => {
     ///for Editing
     if (editId) {
       fetch(
-        `https://expense-tracker-7f0ee-default-rtdb.firebaseio.com/Expenses/${editId}.json`,
+        `https://expense-tracker2-4de07-default-rtdb.firebaseio.com/Expenses/${editId}.json`,
         {
           method: "PUT",
           body: JSON.stringify(expenseData),
@@ -108,14 +107,14 @@ const Expenses = () => {
         }
       ).then((res) => {
         if (res.ok) {
-          // alert(" data is edited plz refresh the page");
-          setData(res.data);
+          alert(" data is edited ");
+          setData(res.ok);
         }
       });
     } else {
       //Post Data
       fetch(
-        "https://expense-tracker-7f0ee-default-rtdb.firebaseio.com/Expenses.json",
+        "https://expense-tracker2-4de07-default-rtdb.firebaseio.com/Expenses.json",
         {
           method: "POST",
           body: JSON.stringify(expenseData),
@@ -126,7 +125,7 @@ const Expenses = () => {
       )
         .then((res) => {
           if (res.ok) {
-            // alert("data sent to the backend");
+            alert("data sent to the backend");
             setData(true);
             return res.json();
           } else {
@@ -165,7 +164,7 @@ const Expenses = () => {
     console.log(deleted);
 
     fetch(
-      `https://expense-tracker-7f0ee-default-rtdb.firebaseio.com/Expenses/${id}.json`,
+      `https://expense-tracker2-4de07-default-rtdb.firebaseio.com/Expenses/${id}.json`,
       {
         method: "DELETE",
         headers: {
@@ -176,7 +175,7 @@ const Expenses = () => {
       if (res.ok) {
         dispatch(expenseActions.afterDeleteExpense(itemMoney));
         setData(res.data);
-        // alert(" Data is deleted plz refresh the page");
+        alert(" Data is deleted plz refresh the page");
         return res.json();
       } else {
         return res.json((data) => {
@@ -204,7 +203,7 @@ const Expenses = () => {
     console.log(expenseData, "----expenseData");
     if (editId) {
       fetch(
-        `https://expense-tracker-7f0ee-default-rtdb.firebaseio.com/Expenses/${editId}.json`,
+        `https://expense-tracker2-4de07-default-rtdb.firebaseio.com/Expenses/${editId}.json`,
         {
           method: "PUT",
           body: JSON.stringify(expenseData),
@@ -221,7 +220,7 @@ const Expenses = () => {
     } else {
       //Post Data
       fetch(
-        "https://expense-tracker-7f0ee-default-rtdb.firebaseio.com/Expenses.json",
+        "https://expense-tracker2-4de07-default-rtdb.firebaseio.com/Expenses.json",
         {
           method: "POST",
           body: JSON.stringify(expenseData),
@@ -232,9 +231,7 @@ const Expenses = () => {
       )
         .then((res) => {
           if (res.ok) {
-            // alert("plz refresh the page");
             dispatch(expenseActions.expense(expenseData));
-            // setRefresh(res.ok);
             return res.json();
           } else {
             return res.json((data) => {
@@ -263,7 +260,7 @@ const Expenses = () => {
         <label htmlFor="expenseMoney">Money</label>
         <input
           id="expenseMoney"
-          type="text"
+          type="number"
           value={money}
           onChange={(e) => moneyHandler(e)}
         />

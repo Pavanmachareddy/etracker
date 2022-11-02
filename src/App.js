@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Login from "./component/Pages/Login/Login";
 import Header from "./component/Layout/Header/Header";
-import SignUp from "./component/Pages/SignUp/SignUp";
+import SignUp from "./component/Pages/Login/SignUp/SignUp";
 import WellComePage from "./component/Pages/WellComePage";
 import Profile from "./component/Pages/Profile/Profile";
 import PasswordReset from "./component/Pages/CreatingPassword/PasswordReset";
@@ -42,14 +42,14 @@ function App() {
 
   useEffect(() => {
     dispatch(authActions.login());
-    setId(localStorage.getItem("idToken"));
+      setId(localStorage.getItem("idToken"));
   }, [id]);
   return (
     <DarkThemeProvider>
       <Container>
         <Header />
         <Routes>
-          {!islogin && <Route exact path="/" element={<SignUp />} />}
+          <Route exact path="/" element={<SignUp />} />
           {id && islogin && (
             <Route exact path="/welcome" element={<WellComePage />} />
           )}

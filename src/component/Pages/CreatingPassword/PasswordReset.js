@@ -11,7 +11,7 @@ const PasswordReset = () => {
     const enteredResetEmail = inputResetEmailRef.current.value;
 
     fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA99thkT2KGxjW0fXTrkbxeP83YIjyXr10",
+      "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA1K7kCTyg-eNlJqQogshjP2ujOrW6wLio",
       {
         method: "POST",
         body: JSON.stringify({

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import VerifyEmailId from "../VerifyEmail/VerifyEmailId";
 import "./SignUp.css";
 
 const SignUp = () => {
-  // const [isVerify, setIsVerify] = useState(false);
 
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
@@ -29,7 +27,7 @@ const SignUp = () => {
 
     if (inputPassword === inputConfirmPassword) {
       fetch(
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA99thkT2KGxjW0fXTrkbxeP83YIjyXr10",
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA1K7kCTyg-eNlJqQogshjP2ujOrW6wLio",
         {
           method: "POST",
           body: JSON.stringify({
@@ -63,33 +61,6 @@ const SignUp = () => {
     } else {
       alert("password is not same");
     }
-    // .then((data) => {
-    //   let id = data.idToken;
-
-    //   fetch(
-    //     "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyA99thkT2KGxjW0fXTrkbxeP83YIjyXr10",
-    //     {
-    //       method: "POST",
-    //       body: JSON.stringify({
-    //         requestType: "VERIFY_EMAIL",
-    //         idToken: id,
-    //       }),
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     }
-    //   ).then((res) => {
-    //     if (res.ok) {
-    //       console.log("Otp sent");
-    //       console.log(res, ".......");
-    //     } else {
-    //       return res.json().then((data) => {
-    //         alert("Something went wrong");
-    //         console.log(data, "---------daaaa");
-    // });
-    // }
-    // });
-    // });
   };
   return (
     <div className="signUpBody">
@@ -133,9 +104,6 @@ const SignUp = () => {
           </p>
         </div>
       </form>
-      {/* <div className="verifyOtp">
-        {isVerify && <VerifyEmailId verify={setIsVerify} />}
-      </div> */}
     </div>
   );
 };

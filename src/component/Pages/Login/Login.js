@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { authActions } from "../../store/authReducer";
 import "./Login.css";
 
@@ -9,7 +9,7 @@ const Login = (props) => {
   const loginpasswordRef = useRef();
   console.log(authActions, "authactions========");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   console.log("-----------------byeeeeee");
   const loginSubmitHandler = (e) => {
     e.preventDefault();
@@ -18,7 +18,7 @@ const Login = (props) => {
     const enteredloginPassword = loginpasswordRef.current.value;
 
     fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA99thkT2KGxjW0fXTrkbxeP83YIjyXr10",
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA1K7kCTyg-eNlJqQogshjP2ujOrW6wLio",
       {
         method: "POST",
         body: JSON.stringify({
@@ -44,7 +44,8 @@ const Login = (props) => {
         localStorage.setItem("idToken", data.idToken);
         // props.setLogin(true);
         dispatch(authActions.login());
-        navigate("/welcome");
+        // navigate("/welcome");
+        window.location.href = "/welcome";
       })
       .catch((err) => {
         console.log("Something Went Wrong");
